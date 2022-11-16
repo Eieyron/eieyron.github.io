@@ -1,5 +1,35 @@
 $light-color: #f4f4f4;
+$red: #ff5b5b;
+$orange: #ff915c;
+$tangerine: #ffbe5b;
+$yellow: #ffdf5b;
+$green: #8fe360;
+$teal: #57e690;
+$light-blue: #57dbe6;
+$khaki: #cfb995;
+$dark: #303030;
+$like: #68b680;
+$dislike: #ff3750;
+$like-hover: #46915c;
+$dislike-hover: #ce2c40;
 
+// font imports
+@font-face {
+  font-family: "Montserrat Black";
+  src: url("/assets/Montserrat/Montserrat-Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat Light";
+  src: url("/assets/Montserrat/Montserrat-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat Medium";
+  src: url("/assets/Montserrat/Montserrat-Medium.ttf") format("truetype");
+}
+
+// default margin and padding for everything
 * {
   margin: 0;
   padding: 0;
@@ -8,4 +38,45 @@ $light-color: #f4f4f4;
 body {
   background-color: $light-color;
   line-height: 1.6;
+  font-size: 19px;
+  font-family: "Montserrat Light", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.content-padding {
+  padding: 0 10% 0 10%;
+}
+
+.navbar {
+  @extend .content-padding;
+
+  display: flex;
+  align-items: center;
+  background-color: $dark;
+  width: 100%;
+  justify-content: flex-end;
+  height: 70px;
+  color: $light-color;
+
+  ul {
+    display: flex;
+    gap: 1rem;
+    list-style-type: none;
+    height: 100%;
+  }
+
+  li {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+}
+
+.navbutton {
+  background-color: $khaki;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem 0 1rem;
 }
