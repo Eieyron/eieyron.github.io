@@ -4,17 +4,33 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Document</title>
   </head>
   <body>
+    <div id="loader" class="loader"></div>
     <nav class="navbar">
       <div class="content">
         <ul>
-          <li class="navtext">SO FUNKTIONIERT'S</li>
-          <li class="navtext">SONDERANGBOTE</li>
+          <li>
+            <a
+              class="navtext"
+              href="https://github.com/eieyron/"
+              target="_blank"
+              >GITHUB</a
+            >
+          </li>
+          <li>
+            <a
+              class="navtext"
+              href="https://www.linkedin.com/in/eieyron/"
+              target="_blank"
+              >LINKEDin</a
+            >
+          </li>
           <li class="dropdown">
-            <a class="navbutton">MEIN BEREICH</a>
+            <a class="navbutton">NORRIS MENU</a>
             <div class="dropdown-content">
               <div class="filler">
                 <div class="reverse-triangle"></div>
@@ -32,6 +48,41 @@
         </ul>
       </div>
     </nav>
-    <div class="hero"></div>
+    <div class="hero">
+      <h1>The Chuck Bible</h1>
+      <h2>Chuck Norris FACTS</h2>
+
+      <form action="post">
+        <div class="custom_input">
+          <input type="text" placeholder="Search Anything about Chuck!?" />
+          <div>SearchButton</div>
+        </div>
+      </form>
+    </div>
+    <main>
+      <div class="content">
+        <div class="categories">
+          <ul id="categories-list"></ul>
+        </div>
+      </div>
+      <hr class="custom" />
+      <div class="joke_div">
+        <div id="jokes-content" class="content">
+          <div id="active-category" class="category_header"></div>
+          <div id="facts-list" class="facts">
+            <div id="fetching-jokes">FETCHING FACTS...</div>
+          </div>
+          <div id="view-more-div"></div>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="content">
+        GOT JOKES? GET PAID <br />
+        FOR SUBMITTING!
+        <a class="hook">SUBMIT JOKE</a>
+      </div>
+    </footer>
+    <script src="/assets/js/index.js"></script>
   </body>
 </html>

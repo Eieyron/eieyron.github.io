@@ -1,0 +1,512 @@
+$light-color: #f4f4f4;
+$red: #ff5b5b;
+$orange: #ff915c;
+$tangerine: #ffbe5b;
+$yellow: #ffdf5b;
+$green: #8fe360;
+$teal: #57e690;
+$light-blue: #57dbe6;
+$khaki: #cfb995;
+$dark: #303030;
+$like: #68b680;
+$dislike: #ff3750;
+$like-hover: #46915c;
+$dislike-hover: #ce2c40;
+$light-grey: #787878;
+
+// font imports
+@font-face {
+  font-family: "Montserrat Black";
+  src: url("/assets/Montserrat/Montserrat-Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat Light";
+  src: url("/assets/Montserrat/Montserrat-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat Medium";
+  src: url("/assets/Montserrat/Montserrat-Medium.ttf") format("truetype");
+}
+
+// default margin and padding for everything
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: $light-color;
+  line-height: 1.6;
+  font-size: 19px;
+  font-family: "Montserrat Light", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shadow {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  color: $khaki;
+  font-size: 60px;
+}
+
+h2 {
+  color: $light-color;
+  font-family: "Montserrat Medium", "sans-serif";
+}
+
+.red {
+  background-color: $red;
+}
+
+.orange {
+  background-color: $orange;
+}
+
+.tangerine {
+  background-color: $tangerine;
+}
+
+.yellow {
+  background-color: $yellow;
+}
+
+.green {
+  background-color: $green;
+}
+
+.teal {
+  background-color: $teal;
+}
+
+.light-blue {
+  background-color: $light-blue;
+}
+
+.button {
+  height: 3rem;
+  width: 225px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid $khaki;
+
+  font-family: "Montserrat Medium", sans-serif;
+}
+
+.button:hover {
+  @extend .shadow;
+}
+
+.loader {
+  border: 16px solid #f3f3f300;
+  border-top: 16px solid $khaki;
+  border-bottom: 16px solid $khaki;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 2s linear infinite;
+  position: fixed;
+  margin: 0 auto;
+  top: 50vh;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.unshow {
+  display: none !important;
+}
+
+.hook {
+  color: $khaki;
+}
+
+.hook:hover::after {
+  // color: $light-color;
+  transform: translate(1rem, 0);
+  transition-duration: 0.5s;
+}
+
+.hook::after {
+  background-image: url("/assets/assets_Homework_Front-End_01/path-copy-3_2@3x.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  content: "";
+  margin-top: 5px;
+  margin-left: 10px;
+  height: 19px;
+  width: 50px;
+}
+
+.hook_down {
+  color: $khaki;
+}
+
+.hook_down:hover::after {
+  // color: $light-color;
+  transform: translate(0, 0.5rem);
+  transition-duration: 0.5s;
+}
+
+.hook_down::after {
+  background-image: url("/assets/assets_Homework_Front-End_01/path-copy-7@3x.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  content: "";
+  margin-top: 5px;
+  margin-left: 10px;
+  height: 19px;
+  width: 50px;
+}
+
+.content {
+  max-width: 1280px;
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    list-style-type: none;
+    height: 100%;
+  }
+
+  li {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+}
+
+.navbar {
+  // @extend .content;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  background-color: $dark;
+
+  .content {
+    @extend .content;
+
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+    height: 70px;
+    color: $light-color;
+
+    li {
+      width: fit-content;
+      max-width: 200px;
+    }
+
+    li.dropdown:hover {
+      color: $dark;
+    }
+
+    a {
+      color: $light-color;
+    }
+
+    a.navtext:hover {
+      color: $khaki;
+    }
+  }
+}
+
+.navbutton {
+  background-color: $khaki;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem 0 1rem;
+}
+
+.dropdown-content {
+  // display: block;
+  opacity: 0;
+  visibility: hidden;
+
+  color: $dark;
+  position: absolute;
+  margin-top: 255px;
+  z-index: 1;
+
+  .list {
+    height: 100%;
+    background-color: $light-color;
+    padding: 12px 16px;
+    width: 200px;
+    box-sizing: border-box;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+  }
+
+  li {
+    white-space: nowrap;
+    color: $light-grey;
+    font-family: "Montserrat Medium", sans-serif;
+    font-size: 16px;
+  }
+
+  li:hover {
+    color: $khaki;
+  }
+
+  .filler {
+    width: 100%;
+    height: 20px;
+    padding: 0px 16px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .reverse-triangle {
+    width: 0%;
+    height: 0%;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid $light-color;
+  }
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transition: visibility 0s, opacity 0.5s, display 0.5s linear;
+}
+
+.hero {
+  background-image: url("/assets/assets_Homework_Front-End_01/bitmap.png");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  height: 360px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .custom_input {
+    display: flex;
+    color: $light-color;
+    padding: 15px;
+    border: 1px solid $light-color;
+    border-radius: 5px;
+    margin-top: 3rem;
+    width: 500px;
+
+    input {
+      font-size: 19px;
+      font-family: "Montserrat Light", sans-serif;
+      background: transparent;
+      border-top-style: hidden;
+      border-right-style: hidden;
+      border-left-style: hidden;
+      border-bottom-style: hidden;
+      width: 100%;
+    }
+
+    input:focus {
+      outline: none;
+    }
+  }
+}
+
+main {
+  padding: 60px 0 60px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .content {
+    padding-bottom: 45px;
+  }
+
+  hr.custom {
+    border-top: 1px solid lightgrey;
+    width: 90%;
+  }
+
+  ul {
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .joke_div {
+    width: 100%;
+    display: flex;
+
+    .content {
+      @extend .content;
+      width: 100%;
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+
+      .facts {
+        display: flex;
+        flex-wrap: wrap;
+
+        align-items: flex-start;
+        justify-content: center;
+
+        gap: 1rem;
+      }
+
+      .fact-status-popular {
+        color: $light-blue;
+        font-family: "Montserrat Medium", sans-serif;
+      }
+
+      .fact-status-trending {
+        color: $yellow;
+        font-family: "Montserrat Medium", sans-serif;
+      }
+
+      .fact-status-epic {
+        color: $red;
+        font-family: "Montserrat Medium", sans-serif;
+      }
+
+      .fact-card {
+        // @extend .shadow;
+        width: 300px;
+        height: fit-content;
+        min-height: 200px;
+        overflow: hidden;
+        padding: 15px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .likes {
+          display: flex;
+
+          justify-content: flex-end;
+          gap: 0.5rem;
+        }
+
+        .like-button {
+          fill: $green;
+
+          display: flex;
+          gap: 0.25rem;
+          align-items: center;
+          align-content: center;
+        }
+
+        .dislike-button {
+          fill: $red;
+
+          display: flex;
+          gap: 0.25rem;
+          align-items: center;
+          align-content: center;
+        }
+      }
+
+      .fact_card:hover {
+        @extend .shadow;
+        transition-duration: 0.4s;
+      }
+    }
+
+    .category_header {
+      width: fit-content;
+
+      padding: 0 15px 0 15px;
+
+      font-size: 15px;
+      font-family: "montserrat medium", sans-serif;
+      text-transform: uppercase;
+
+      border-radius: 50px;
+
+      color: $light-color;
+    }
+  }
+}
+
+.selection_button {
+  height: 3rem;
+  width: 225px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  color: $light-color;
+
+  font-family: "Montserrat Medium", sans-serif;
+}
+
+.selection_button:hover {
+  @extend .shadow;
+}
+
+footer {
+  background-image: url("/assets/assets_Homework_Front-End_01/bitmap_2@3x.png");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    @extend .content;
+    width: 100%;
+    display: flex;
+    color: $light-color;
+
+    font-family: "Montserrat Medium", sans-s rif;
+    flex-direction: column;
+  }
+}
+
+#view-more-div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
