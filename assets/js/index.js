@@ -10,7 +10,9 @@ colors = [
   "light-blue",
 ];
 
-facts = {};
+facts = {
+  uncategorized: {},
+};
 
 categories_shown = false;
 active_category = "";
@@ -56,6 +58,7 @@ function get_category_facts(number, category, show_error = false) {
         } else {
           facts[category][facts_data.id] = {
             likes: 0,
+            dislikes: 0,
             fact: facts_data.value,
           };
           jokes_gathered_ids.push(facts_data.id);
@@ -186,6 +189,12 @@ function show_all_categories() {
         if ($(child).hasClass("unshow")) {
           $(child).removeClass("unshow");
         }
+
+        if (child.id === "last") {
+          $("#view-all-categories").html(`
+              <a class="hook_up">BACK</a>
+            `);
+        }
       });
   } else {
     categories_shown = false;
@@ -194,6 +203,9 @@ function show_all_categories() {
       .map((index, child) => {
         // console.log("child", child);
         if (child.id === "last") {
+          $("#view-all-categories").html(`
+            <a class="hook_down">VIEW ALL</a>
+          `);
         } else if (index > 6) {
           $(child).addClass("unshow");
         }
@@ -310,6 +322,54 @@ function main() {
     `);
     $("#view-more-jokes").click((e) => {
       get_category_facts(3, active_category, true);
+    });
+  });
+
+  // add listeners
+  $("#search-input").keyup((e) => {
+    // console.log("target", e.target.value);
+
+    $.get(
+      `
+        https://api.chucknorris.io/jokes/search?query=${e.target.value}
+        `,
+      (data) => {
+        $("#search-list").html("");
+
+        if (e.target.value === "") {
+          $("#search-dropdown").css({
+            display: "none",
+          });
+        } else {
+          data.result.slice(0, 10).map((fact) => {
+            if (fact.categories.length > 0) {
+              category = fact.categories[0];
+            } else {
+              category = "uncategorized";
+            }
+
+            $("#search-list").append(`
+                            <li>
+                                <div class="dropdown-category">${category}</div>
+                                ${fact.value.slice(0, 30)}...
+                            </li>
+                        `);
+          });
+
+          x = $("#search-input").position();
+          $("#search-dropdown").css({
+            left: `${x.left}px`,
+            top: `${x.top + 100}px`,
+            display: "flex",
+          });
+        }
+      }
+    );
+  });
+
+  $("#search-input").focusout((e) => {
+    $("#search-dropdown").css({
+      display: "none",
     });
   });
 

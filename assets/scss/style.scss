@@ -44,6 +44,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  // width: 100%;
 }
 
 .shadow {
@@ -185,6 +186,28 @@ h2 {
   width: 50px;
 }
 
+.hook_up {
+  color: $khaki;
+}
+
+.hook_up:hover::after {
+  // color: $light-color;
+  transform: translate(0, -0.5rem);
+  transition-duration: 0.5s;
+}
+
+.hook_up::after {
+  background-image: url("/assets/assets_Homework_Front-End_01/path-copy-7@3x up.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  content: "";
+  margin-top: 5px;
+  margin-left: 10px;
+  height: 19px;
+  width: 50px;
+}
+
 .content {
   max-width: 1280px;
 
@@ -247,6 +270,21 @@ h2 {
   padding: 0 1rem 0 1rem;
 }
 
+.filler {
+  height: 20px;
+  padding: 0px 16px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.reverse-triangle {
+  width: 0%;
+  height: 0%;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid $light-color;
+}
+
 .dropdown-content {
   // display: block;
   opacity: 0;
@@ -256,18 +294,20 @@ h2 {
   position: absolute;
   margin-top: 255px;
   z-index: 1;
+  overflow: hidden !important;
 
   .list {
     height: 100%;
     background-color: $light-color;
     padding: 12px 16px;
-    width: 200px;
+    width: fit-content;
     box-sizing: border-box;
   }
 
   ul {
     display: flex;
     flex-direction: column;
+    align-items: flex-start !important;
   }
 
   li {
@@ -280,22 +320,6 @@ h2 {
   li:hover {
     color: $khaki;
   }
-
-  .filler {
-    width: 100%;
-    height: 20px;
-    padding: 0px 16px;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .reverse-triangle {
-    width: 0%;
-    height: 0%;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 15px solid $light-color;
-  }
 }
 
 .dropdown:hover .dropdown-content {
@@ -306,7 +330,9 @@ h2 {
 }
 
 .hero {
-  background-image: url("/assets/assets_Homework_Front-End_01/bitmap.png");
+  background-image: linear-gradient($dark, $dark),
+    url("/assets/assets_Homework_Front-End_01/chuck-norris-movies.webp");
+  background-blend-mode: hard-light;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -319,30 +345,98 @@ h2 {
   justify-content: center;
   flex-direction: column;
 
-  .custom_input {
-    display: flex;
+  #search-input {
+    background-image: url("/assets/assets_Homework_Front-End_01/search-copy@3x.png");
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    background-position-x: 500px;
+    background-position-y: center;
+
+    background-color: transparent;
+
+    margin-top: 30px;
+
+    padding-right: 25px;
+    padding-left: 25px;
+
+    height: 3rem;
+    width: 80vw;
+    max-width: 500px;
+
+    font-size: 20px;
+    font-family: "Montserrat Medium", sans-serif;
+
     color: $light-color;
-    padding: 15px;
-    border: 1px solid $light-color;
+
+    border: 1px solid white;
     border-radius: 5px;
-    margin-top: 3rem;
-    width: 500px;
-
-    input {
-      font-size: 19px;
-      font-family: "Montserrat Light", sans-serif;
-      background: transparent;
-      border-top-style: hidden;
-      border-right-style: hidden;
-      border-left-style: hidden;
-      border-bottom-style: hidden;
-      width: 100%;
-    }
-
-    input:focus {
-      outline: none;
-    }
   }
+
+  #search-input:focus {
+    background-image: url("/assets/assets_Homework_Front-End_02/search-copy@3x.png");
+    background-color: $light-color;
+    outline: none;
+    color: $light-grey;
+  }
+
+  .search-dropdown {
+    display: none;
+    flex-direction: column;
+
+    position: absolute;
+    background-color: transparent;
+    width: 80vw;
+    max-width: 500px;
+    height: fit-content;
+    max-height: 500px;
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      width: 80vw;
+      max-width: 500px;
+      height: fit-content;
+      max-height: 500px;
+      overflow: scroll;
+      border-radius: 5px;
+      padding: 1rem;
+      background-color: $light-color;
+
+      #search-list {
+        display: flex;
+        flex-direction: column;
+
+        li {
+          display: flex;
+          width: 100%;
+          justify-content: flex-start;
+          gap: 1rem;
+        }
+      }
+    }
+    top: px;
+  }
+
+  // .search-dropdown {
+  //   @extend .dropdown-content;
+
+  //   display: block !important;
+  //   opacity: 1;
+  //   visibility: visible;
+  //   // opacity: 0;
+  //   // visibility: hidden;
+  //   margin-left: 50px;
+  //   margin-top: 3000px !important;
+  //   max-width: 600px;
+  //   min-width: 600px;
+  // }
+
+  // .search-dropdown-visible {
+  //   display: block;
+  //   opacity: 1;
+  //   visibility: visible;
+  //   transition: visibility 0s, opacity 0.5s, display 0.5s linear !important;
+  // }
 }
 
 main {
@@ -351,6 +445,7 @@ main {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 
   .content {
     padding-bottom: 45px;
@@ -370,6 +465,7 @@ main {
   .joke_div {
     width: 100%;
     display: flex;
+    justify-content: center;
 
     .content {
       @extend .content;
@@ -423,25 +519,33 @@ main {
         }
 
         .like-button {
-          fill: $green;
+          fill: $like;
 
           display: flex;
           gap: 0.25rem;
           align-items: center;
           align-content: center;
+        }
+
+        .like-button:hover {
+          fill: $like-hover;
         }
 
         .dislike-button {
-          fill: $red;
+          fill: $dislike;
 
           display: flex;
           gap: 0.25rem;
           align-items: center;
           align-content: center;
         }
+
+        .dislike-button:hover {
+          fill: $dislike-hover;
+        }
       }
 
-      .fact_card:hover {
+      .fact-card:hover {
         @extend .shadow;
         transition-duration: 0.4s;
       }
@@ -458,7 +562,19 @@ main {
 
       border-radius: 50px;
 
+      background-color: $khaki;
       color: $light-color;
+    }
+
+    .single-fact {
+      width: 100%;
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+    }
+
+    .fact-nav {
     }
   }
 }
@@ -509,4 +625,31 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+// responsiveness
+@media screen and (max-width: 600px) {
+  h1 {
+    text-align: center;
+    font-size: 50px;
+  }
+
+  footer {
+    div.content {
+      padding: 20px;
+    }
+  }
+}
+
+// responsiveness
+@media screen and (max-width: 1280px) {
+  footer {
+    div.content {
+      padding: 20%;
+    }
+  }
+
+  .navbar {
+    display: none;
+  }
 }
