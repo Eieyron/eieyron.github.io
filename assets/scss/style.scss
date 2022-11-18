@@ -463,10 +463,12 @@ h2 {
       border-radius: 5px;
       // padding: 1rem;
       background-color: $light-color;
+      z-index: 1000;
 
       #search-list {
         display: flex;
         flex-direction: column;
+        z-index: 1000;
 
         li {
           display: flex;
@@ -476,6 +478,7 @@ h2 {
           box-sizing: border-box;
           padding: 5px;
           border-radius: 5px;
+          z-index: 1000;
         }
 
         .search-category {
