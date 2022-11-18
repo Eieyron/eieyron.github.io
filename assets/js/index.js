@@ -35,6 +35,7 @@ facts = {
 
 categories_shown = false;
 active_category = "";
+active_fact = {};
 
 // * LOADER MANIPULATION
 function show_loader() {
@@ -58,6 +59,8 @@ function create_new_fact(fact) {
 }
 
 function get_fact_status(fact) {
+  console.log(fact);
+
   fact_status = "POPULAR";
 
   if (fact.likes >= 5 && fact.likes <= 10) {
@@ -80,7 +83,7 @@ function create_fact_card(id, category) {
         <div id="fact-status-${id}" class="fact-status-${fact_status.toLowerCase()}">${fact_status}</div>
         "${fact.fact}"
         <div class="like-dislike-footer">
-            <a href="#" class="hook">SEE STATS</a>
+            <a class="hook">SEE STATS</a>
         </div>
     </div>
   `;
@@ -264,6 +267,50 @@ function get_category_facts(number, category, show_error = false) {
   unshow_loader();
 }
 
+function get_new_fact(category) {
+  // gets 1 new fact and returns it
+  to_return = {
+    id: "",
+    category: category,
+  };
+
+  hit_limit = 10;
+  hit_limit_counter = 0;
+
+  // loop to hit limit until it breaks
+  while (hit_limit_counter < hit_limit) {
+    $.ajax({
+      async: false,
+      type: "GET",
+      url: `https://api.chucknorris.io/jokes/random?category=${category}`,
+      success: (facts_data) => {
+        if (facts_data.id in facts[category]) {
+          // algo to stop searching for jokes after a few failed attempts
+          hit_limit_counter = hit_limit_counter + 1;
+          if (hit_limit_counter > hit_limit) {
+            if (show_error) {
+              if (jokes_gathered == 0) {
+                alert("No more facts available on this category.");
+                hit_limit_counter = hit_limit;
+              }
+            }
+          }
+        } else {
+          // create new fact and add to list
+          facts[category][facts_data.id] = create_new_fact(facts_data.value);
+          to_return = {
+            id: facts_data.id,
+            category: category,
+          };
+          hit_limit_counter = hit_limit;
+        }
+      },
+    });
+  }
+
+  return to_return;
+}
+
 function show_category_facts(category) {
   // shows pre-existing category facts
 
@@ -344,6 +391,56 @@ function show_single_fact(id, category) {
 
   // add listeners to single-fact-card
   bind_listeners_to_facts_card_large(id, category);
+
+  active_fact = {
+    id: id,
+    category: category,
+  };
+}
+
+function next_fact() {
+  //* gets the next fact in the category, if none anymore, fetches a new one
+
+  id = active_fact.id;
+  category = active_fact.category;
+
+  facts_category_keys = Object.keys(facts[category]);
+  fact_index = facts_category_keys.indexOf(id);
+
+  // if fact_index == category length -1, it's the last
+  if (fact_index == facts_category_keys.length - 1) {
+    fact_details = get_new_fact(category);
+    if (fact_details.id) {
+      show_single_fact(fact_details.id, category);
+    } else {
+      // if none returned, loop to the first element
+      show_single_fact(facts_category_keys[1], category);
+    }
+  } else {
+    show_single_fact(facts_category_keys[fact_index + 1], category);
+  }
+  // else, get the next
+}
+
+function prev_fact() {
+  //* gets the prev fact in the category, if none anymore, fetches a new one
+
+  id = active_fact.id;
+  category = active_fact.category;
+
+  facts_category_keys = Object.keys(facts[category]);
+  fact_index = facts_category_keys.indexOf(id);
+
+  // if fact_index == 1, it's the last previous fact, loop to the last fact
+  if (fact_index == 1) {
+    show_single_fact(
+      facts_category_keys[facts_category_keys.length - 1],
+      category
+    );
+  } else {
+    show_single_fact(facts_category_keys[fact_index - 1], category);
+  }
+  // else, get the next
 }
 
 // * Main
@@ -360,13 +457,13 @@ function main() {
         // hide categories that are more than 6
         if (index > 6) {
           $("#categories-list").append(`
-                <li class="unshow"><a href="#" class="selection_button ${
+                <li class="unshow"><a class="selection_button ${
                   colors[index % 7]
                 }" id="${category}">${category.toUpperCase()}</a></li>
             `);
         } else {
           $("#categories-list").append(`
-                <li><a href="#" class="selection_button ${
+                <li><a class="selection_button ${
                   colors[index % 7]
                 }" id="${category}">${category.toUpperCase()}</a></li>
             `);
@@ -417,47 +514,98 @@ function main() {
   });
 
   // * SEARCHING FUNCTIONALITY
-  $("#search-input").keyup((e) => {
-    // console.log("target", e.target.value);
+
+  //setup before functions
+  var typingTimer; //timer identifier
+  var doneTypingInterval = 500; //time in ms, 5 seconds for example
+
+  //user is "finished typing," do something
+  function doneTyping() {
+    search_term = $("#search-input").val();
 
     $.get(
       `
-        https://api.chucknorris.io/jokes/search?query=${e.target.value}
+        https://api.chucknorris.io/jokes/search?query=${search_term}
         `,
       (data) => {
+        console.log("what?", search_term);
         $("#search-list").html("");
 
-        if (e.target.value === "") {
+        if (search_term === "") {
           $("#search-dropdown").css({
             display: "none",
           });
         } else {
-          data.result.slice(0, 10).map((fact) => {
+          if (data.result.length == 0) {
+            alert("No Facts found!");
+          } else if (data.result.length == 1) {
+            $("#search-dropdown").css({
+              display: "none",
+            });
+
+            fact = data.result[0];
+
             if (fact.categories.length > 0) {
               category = fact.categories[0];
             } else {
               category = "uncategorized";
             }
 
-            fact["category"][fact.id] = {};
+            // if fact doesnt exist on database, creates new one
+            if (!(fact.id in facts[category])) {
+              facts[category][fact.id] = create_new_fact(fact.value);
+            }
 
-            $("#search-list").append(`
-                <li>
-                    <div class="dropdown-category">${category}</div>
-                    ${fact.value.slice(0, 30)}...
-                </li>
-            `);
-          });
+            show_single_fact(fact.id, category);
+            // show 1 joke
+          } else {
+            data.result.slice(0, 10).map((fact) => {
+              if (fact.categories.length > 0) {
+                category = fact.categories[0];
+              } else {
+                category = "uncategorized";
+              }
 
-          x = $("#search-input").position();
-          $("#search-dropdown").css({
-            left: `${x.left}px`,
-            top: `${x.top + 100}px`,
-            display: "flex",
-          });
+              // if fact doesnt exist on database, creates new one
+              if (!(fact.id in facts[category])) {
+                facts[category][fact.id] = create_new_fact(fact.value);
+              }
+
+              $("#search-list").append(`
+                  <li>
+                      <div class="dropdown-category">${category}</div>
+                      ${fact.value.slice(0, 30)}...
+                  </li>
+              `);
+            });
+
+            x = $("#search-input").position();
+            $("#search-dropdown").css({
+              left: `${x.left}px`,
+              top: `${x.top + 100}px`,
+              display: "flex",
+            });
+          }
         }
       }
     );
+  }
+
+  $("#search-input").keyup((e) => {
+    // console.log("target", e.target.value);
+    if (e.keyCode == 13) {
+      // if entered
+      clearTimeout(typingTimer);
+      doneTyping();
+    } else {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    }
+  });
+
+  $("#search-input").keydown((e) => {
+    // console.log("target", e.target.value);
+    clearTimeout(typingTimer);
   });
 
   $("#search-input").focusout((e) => {
@@ -466,6 +614,7 @@ function main() {
     });
   });
 
+  // add listener to single page joke back
   $("#single-jokes-back").click((e) => {
     // show category facts
     $("#category-jokes").removeClass("unshow");
@@ -476,6 +625,15 @@ function main() {
 
     // clear single-fact div
     $("#single-fact-div").html("");
+  });
+
+  // add listener to next joke
+  $("#next-fact").click((e) => {
+    next_fact();
+  });
+
+  $("#prev-fact").click((e) => {
+    prev_fact();
   });
 
   console.log(facts);
