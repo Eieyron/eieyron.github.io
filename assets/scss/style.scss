@@ -146,6 +146,23 @@ h2 {
   display: none !important;
 }
 
+.category_header {
+  width: fit-content;
+
+  padding: 0 15px 0 15px;
+
+  font-size: 15px;
+  font-family: "montserrat medium", sans-serif;
+  text-transform: uppercase;
+
+  border-radius: 50px;
+
+  color: $light-color;
+
+  display: flex;
+  align-items: center;
+}
+
 .hook {
   color: $khaki;
 }
@@ -441,9 +458,9 @@ h2 {
       max-width: 500px;
       height: fit-content;
       max-height: 500px;
-      overflow: scroll;
+      // overflow: scroll;
       border-radius: 5px;
-      padding: 1rem;
+      // padding: 1rem;
       background-color: $light-color;
 
       #search-list {
@@ -455,32 +472,29 @@ h2 {
           width: 100%;
           justify-content: flex-start;
           gap: 1rem;
+          box-sizing: border-box;
+          padding: 5px;
+          border-radius: 5px;
         }
+
+        .search-category {
+          @extend .category_header;
+        }
+
+        li:hover {
+          background-color: white;
+        }
+      }
+
+      .search-col-1 {
+        width: 40%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     top: px;
   }
-
-  // .search-dropdown {
-  //   @extend .dropdown-content;
-
-  //   display: block !important;
-  //   opacity: 1;
-  //   visibility: visible;
-  //   // opacity: 0;
-  //   // visibility: hidden;
-  //   margin-left: 50px;
-  //   margin-top: 3000px !important;
-  //   max-width: 600px;
-  //   min-width: 600px;
-  // }
-
-  // .search-dropdown-visible {
-  //   display: block;
-  //   opacity: 1;
-  //   visibility: visible;
-  //   transition: visibility 0s, opacity 0.5s, display 0.5s linear !important;
-  // }
 }
 
 main {
@@ -665,23 +679,6 @@ main {
         display: flex;
         justify-content: flex-end;
       }
-    }
-
-    .category_header {
-      width: fit-content;
-
-      padding: 0 15px 0 15px;
-
-      font-size: 15px;
-      font-family: "montserrat medium", sans-serif;
-      text-transform: uppercase;
-
-      border-radius: 50px;
-
-      color: $light-color;
-
-      display: flex;
-      align-items: center;
     }
 
     .single-fact {

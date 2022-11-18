@@ -91,6 +91,8 @@ function create_fact_card(id, category) {
 
 function create_fact_card_single(id, category) {
   fact = facts[category][id];
+  console.log(id, category);
+  console.log(fact);
 
   fact_status = get_fact_status(fact);
 
@@ -155,12 +157,12 @@ function create_fact_card_single(id, category) {
 
 function bind_listeners_to_facts_card(id, category) {
   // add like/dislike listeners
-  $(`#like-button-${id}`).click((e) => {
-    like(id, category);
-  });
-  $(`#dislike-button-${id}`).click((e) => {
-    dislike(id, category);
-  });
+  // $(`#like-button-${id}`).click((e) => {
+  //   like(id, category);
+  // });
+  // $(`#dislike-button-${id}`).click((e) => {
+  //   dislike(id, category);
+  // });
 
   // add single fact shower
   $(`#${id}`).click((e) => {
@@ -560,6 +562,8 @@ function main() {
             // show 1 joke
           } else {
             data.result.slice(0, 10).map((fact) => {
+              console.log(fact);
+
               if (fact.categories.length > 0) {
                 category = fact.categories[0];
               } else {
@@ -572,11 +576,36 @@ function main() {
               }
 
               $("#search-list").append(`
-                  <li>
-                      <div class="dropdown-category">${category}</div>
-                      ${fact.value.slice(0, 30)}...
+                  <li id="search-${fact.id}" data-category="${category}">
+                      <div class="search-col-1" >
+                        <div class="search-category ${
+                          facts[category].color
+                        }">${category}</div>
+                      </div>
+                      <div class="search-col-2">
+                        ${fact.value.slice(0, 25)}...
+                      </div>
                   </li>
               `);
+
+              // add listener to search term
+              $("#search-" + fact.id).on("mousedown", (e) => {
+                console.log(
+                  "search tearm clicked",
+                  fact.id,
+                  $("#search-" + fact.id).data("category")
+                );
+                show_single_fact(
+                  fact.id,
+                  $("#search-" + fact.id).data("category")
+                );
+              });
+
+              console.log(
+                "added listeners to",
+                $("#search-" + fact.id),
+                category
+              );
             });
 
             x = $("#search-input").position();
