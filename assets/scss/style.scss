@@ -450,6 +450,7 @@ h2 {
     max-width: 500px;
     height: fit-content;
     max-height: 500px;
+    z-index: 1000;
 
     .list {
       display: flex;
