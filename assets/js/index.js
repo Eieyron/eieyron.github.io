@@ -445,6 +445,18 @@ function prev_fact() {
   // else, get the next
 }
 
+function search_term_onclick(fact) {
+  console.log(
+    "search tearm clicked",
+    fact.id,
+    $("#search-" + fact.id).data("category")
+  );
+  show_single_fact(fact.id, $("#search-" + fact.id).data("category"));
+  $("#search-dropdown").css({
+    display: "none",
+  });
+}
+
 // * Main
 function main() {
   // * get all categories
@@ -590,15 +602,11 @@ function main() {
 
               // add listener to search term
               $("#search-" + fact.id).on("mousedown", (e) => {
-                console.log(
-                  "search tearm clicked",
-                  fact.id,
-                  $("#search-" + fact.id).data("category")
-                );
-                show_single_fact(
-                  fact.id,
-                  $("#search-" + fact.id).data("category")
-                );
+                search_term_onclick(fact);
+              });
+
+              $("#search-" + fact.id).on("touchdown", (e) => {
+                search_term_onclick(fact);
               });
 
               console.log(

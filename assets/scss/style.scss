@@ -493,7 +493,6 @@ h2 {
         align-items: center;
       }
     }
-    top: px;
   }
 }
 
@@ -749,6 +748,56 @@ footer {
   footer {
     div.content {
       padding: 20px;
+    }
+  }
+
+  main {
+    padding: 30px 0 30px 0;
+
+    .joke_div {
+      .content {
+        align-items: center;
+
+        width: 100% !important;
+        min-width: none;
+      }
+      .fact-container {
+        font-size: 20px !important;
+      }
+      .fact-nav {
+        width: 90%;
+      }
+      .fact-card-large {
+        padding: 25px 50px 25px 50px !important;
+      }
+    }
+  }
+
+  .hero {
+    .search-dropdown {
+      width: fit-content;
+      max-width: none !important;
+      height: fit-content;
+      max-height: none !important;
+
+      .list {
+        width: fit-content;
+        max-width: none !important;
+        height: fit-content;
+        max-height: none !important;
+
+        #search-list {
+          .search-category {
+            @extend .category_header;
+            width: 150px;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
     }
   }
 }
