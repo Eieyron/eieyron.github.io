@@ -93,6 +93,10 @@ h2 {
   background-color: $light-blue;
 }
 
+.khaki {
+  background-color: $khaki;
+}
+
 .button {
   height: 3rem;
   width: 225px;
@@ -147,7 +151,7 @@ h2 {
 }
 
 .hook:hover::after {
-  // color: $light-color;
+  // default hook moves to the right
   transform: translate(1rem, 0);
   transition-duration: 0.5s;
 }
@@ -165,47 +169,87 @@ h2 {
 }
 
 .hook_down {
-  color: $khaki;
+  @extend .hook;
 }
 
 .hook_down:hover::after {
-  // color: $light-color;
+  @extend .hook, :hover, ::after;
+
   transform: translate(0, 0.5rem);
-  transition-duration: 0.5s;
 }
 
 .hook_down::after {
+  @extend .hook, ::after;
+
   background-image: url("/assets/assets_Homework_Front-End_01/path-copy-7@3x.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  content: "";
-  margin-top: 5px;
-  margin-left: 10px;
-  height: 19px;
-  width: 50px;
 }
 
 .hook_up {
-  color: $khaki;
+  @extend .hook;
 }
 
 .hook_up:hover::after {
-  // color: $light-color;
+  @extend .hook, :hover, ::after;
+
   transform: translate(0, -0.5rem);
-  transition-duration: 0.5s;
 }
 
 .hook_up::after {
+  @extend .hook, ::after;
+
   background-image: url("/assets/assets_Homework_Front-End_01/path-copy-7@3x up.png");
+}
+
+.short-hook {
+  @extend .hook;
+}
+
+.short-hook:hover::after {
+  @extend .hook, :hover, ::after;
+
+  transform: translate(0.5rem, 0);
+}
+
+.short-hook::after {
+  @extend .hook, ::after;
+
+  background-image: url("/assets/assets_Homework_Front-End_02/arrow-left-copy@3x.png");
+}
+
+.short-hook-left {
+  color: $khaki;
+}
+
+.short-hook-left:hover::before {
+  // default short-hook-left moves to the right
+  transform: translate(-1rem, 0);
+  transition-duration: 0.5s;
+}
+
+.short-hook-left::before {
+  background-image: url("/assets/assets_Homework_Front-End_02/arrow-left-copy-2@3x.png");
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
   content: "";
   margin-top: 5px;
-  margin-left: 10px;
+  margin-left: -20px;
   height: 19px;
   width: 50px;
+}
+
+.circle-button {
+  border-radius: 32% 68% 76% 24% / 37% 27% 73% 63%;
+  background-color: $dark;
+  width: 75px;
+  height: 75px;
+
+  .short-hook-left::before {
+    @extend .short-hook-left, ::before;
+
+    margin-top: 25px;
+    margin-left: 30px;
+  }
 }
 
 .content {
@@ -466,6 +510,8 @@ main {
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
     .content {
       @extend .content;
@@ -503,32 +549,54 @@ main {
         // @extend .shadow;
         width: 300px;
         height: fit-content;
-        min-height: 200px;
+        // min-height: 200px;
         overflow: hidden;
         padding: 15px;
         background-color: white;
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        gap: 1rem;
 
-        .likes {
+        .like-dislike-footer {
           display: flex;
+
+          width: 100%;
 
           justify-content: flex-end;
           gap: 0.5rem;
+
+          .hook {
+            margin-right: 40px;
+            font-family: "Montserrat Medium", sans-serif;
+          }
         }
 
         .like-button {
-          fill: $like;
-
           display: flex;
           gap: 0.25rem;
           align-items: center;
           align-content: center;
         }
 
-        .like-button:hover {
-          fill: $like-hover;
+        .like-container {
+          fill: none;
+          stroke: white;
+          background-color: $like;
+
+          padding: 5px;
+
+          border-radius: 50%;
+
+          display: flex;
+
+          align-items: center;
+          align-content: center;
+        }
+
+        .like-container:hover {
+          background-color: $like-hover;
         }
 
         .dislike-button {
@@ -540,14 +608,62 @@ main {
           align-content: center;
         }
 
-        .dislike-button:hover {
-          fill: $dislike-hover;
+        .dislike-container {
+          fill: none;
+          stroke: white;
+          background-color: $dislike;
+
+          padding: 5px;
+
+          border-radius: 50%;
+
+          display: flex;
+
+          align-items: center;
+          align-content: center;
+        }
+
+        .dislike-container:hover {
+          background-color: $dislike-hover;
         }
       }
 
       .fact-card:hover {
         @extend .shadow;
         transition-duration: 0.4s;
+      }
+
+      .fact-card-large {
+        @extend .fact-card;
+
+        padding: 25px;
+        box-sizing: border-box;
+
+        width: 75%;
+        max-width: 1280px;
+        min-width: 450px;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+
+        .fact-card-large-header {
+          display: flex;
+          width: 100%;
+
+          justify-content: space-between;
+        }
+
+        .fact-container {
+          padding: 15px;
+          font-size: 30px;
+          text-align: center;
+        }
+      }
+      .fact-nav {
+        display: flex;
+        justify-content: flex-end;
       }
     }
 
@@ -563,6 +679,9 @@ main {
       border-radius: 50px;
 
       color: $light-color;
+
+      display: flex;
+      align-items: center;
     }
 
     .single-fact {
@@ -571,9 +690,6 @@ main {
 
       justify-content: center;
       align-items: center;
-    }
-
-    .fact-nav {
     }
   }
 }

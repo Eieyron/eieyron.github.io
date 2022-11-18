@@ -10,8 +10,27 @@ colors = [
   "light-blue",
 ];
 
+/*
+
+  this is how facts are stored in the dictionary:
+
+  facts = {
+    category: {
+      color: red,
+      fact_id: {
+        likes: 0,
+        dislikes: 0,
+        fact: "quotation",
+      }
+    }
+  }
+
+*/
+
 facts = {
-  uncategorized: {},
+  uncategorized: {
+    color: "khaki",
+  },
 };
 
 categories_shown = false;
@@ -26,6 +45,174 @@ function show_loader() {
 // * unshow loader
 function unshow_loader() {
   $("#loader").addClass("unshow");
+}
+
+// * CONSTRUCTORS
+function create_new_fact(fact) {
+  // creates a new fact object
+  return {
+    likes: 0,
+    dislikes: 0,
+    fact: fact,
+  };
+}
+
+function get_fact_status(fact) {
+  fact_status = "POPULAR";
+
+  if (fact.likes >= 5 && fact.likes <= 10) {
+    fact_status = "TRENDING";
+  } else if (fact.likes >= 11) {
+    fact_status = "EPIC";
+  }
+
+  return fact_status;
+}
+
+function create_fact_card(id, category) {
+  // creates card for fact
+  fact = facts[category][id];
+
+  fact_status = get_fact_status(fact);
+
+  return `
+    <div class="fact-card" id="${id}">
+        <div id="fact-status-${id}" class="fact-status-${fact_status.toLowerCase()}">${fact_status}</div>
+        "${fact.fact}"
+        <div class="like-dislike-footer">
+            <a href="#" class="hook">SEE STATS</a>
+        </div>
+    </div>
+  `;
+}
+
+function create_fact_card_single(id, category) {
+  fact = facts[category][id];
+
+  fact_status = get_fact_status(fact);
+
+  return `
+    <div class="fact-card-large">
+      <div class="fact-card-large-header">
+        <div id="joke-category-${id}" class="category_header ${
+    facts[category].color
+  }">
+          ${category}
+        </div>
+        <div id="fact-status-large-${id}" class="fact-status-${fact_status.toLowerCase()}">
+          ${fact_status}
+        </div>
+      </div>
+      <div class="fact-container">"${fact.fact}"</div>
+      <div class="like-dislike-footer">
+            <div id="like-button-large-${id}" class="like-button">
+                <div 
+                  id="like-counter-large-${id}" 
+                  class="like-counter">${fact.likes}</div>
+                  <div class="like-container">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+
+                      width=25
+                      height=25
+
+                      stroke-width="1.5"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"
+                      />
+                    </svg>
+                  </div>
+            </div>
+            <div id="dislike-button-large-${id}" class="dislike-button">
+                <div 
+                  id="dislike-counter-large-${id}" 
+                  class="dislike-counter">${fact.dislikes}</div>
+
+                <div class="dislike-container">
+                  <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      viewBox="0 0 24 24" 
+                      width="25"
+                      height="25"
+                      stroke-width="1.5"
+                      class="w-6 h-6">
+                      <path d="M15.73 5.25h1.035A7.465 7.465 0 0118 9.375a7.465 7.465 0 01-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 01-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.498 4.498 0 00-.322 1.672V21a.75.75 0 01-.75.75 2.25 2.25 0 01-2.25-2.25c0-1.152.26-2.243.723-3.218C7.74 15.724 7.366 15 6.748 15H3.622c-1.026 0-1.945-.694-2.054-1.715A12.134 12.134 0 011.5 12c0-2.848.992-5.464 2.649-7.521.388-.482.987-.729 1.605-.729H9.77a4.5 4.5 0 011.423.23l3.114 1.04a4.5 4.5 0 001.423.23zM21.669 13.773c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.959 8.959 0 01-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227z" />
+                  </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+  `;
+}
+
+function bind_listeners_to_facts_card(id, category) {
+  // add like/dislike listeners
+  $(`#like-button-${id}`).click((e) => {
+    like(id, category);
+  });
+  $(`#dislike-button-${id}`).click((e) => {
+    dislike(id, category);
+  });
+
+  // add single fact shower
+  $(`#${id}`).click((e) => {
+    show_single_fact(id, category);
+  });
+}
+
+function bind_listeners_to_facts_card_large(id, category) {
+  // add like/dislike listeners
+  $(`#like-button-large-${id}`).click((e) => {
+    like(id, category, true);
+  });
+  $(`#dislike-button-large-${id}`).click((e) => {
+    dislike(id, category, true);
+  });
+
+  // add single fact shower
+  $(`#${id}`).click((e) => {
+    show_single_fact(id, category);
+  });
+}
+
+function like(id, category, large = false) {
+  // * like button listener
+  add_string = "";
+  if (large) add_string = "-large";
+  console.log(`clicked${add_string}`);
+
+  $(`#like-counter${add_string}-${id}`).html(++facts[category][id].likes);
+
+  fact_status = get_fact_status(facts[category][id]);
+
+  $(`#fact-status${add_string}-${id}`).html(fact_status);
+  $(`#fact-status${add_string}-${id}`).removeClass();
+  $(`#fact-status${add_string}-${id}`).addClass(
+    `fact-status-${fact_status.toLowerCase()}`
+  );
+}
+
+function dislike(id, category, large = false) {
+  // * dislike button listener
+  add_string = "";
+  if (large) add_string = "-large";
+
+  // add dislike
+  $(`#dislike-counter${add_string}-${id}`).html(++facts[category][id].dislikes);
+
+  // update fact status
+  fact_status = get_fact_status(facts[category][id]);
+
+  $(`#fact-status${add_string}-${id}`).html(fact_status);
+  $(`#fact-status${add_string}-${id}`).removeClass();
+  $(`#fact-status${add_string}-${id}`).addClass(
+    `fact-status-${fact_status.toLowerCase()}`
+  );
 }
 
 function get_category_facts(number, category, show_error = false) {
@@ -46,6 +233,7 @@ function get_category_facts(number, category, show_error = false) {
       url: `https://api.chucknorris.io/jokes/random?category=${category}`,
       success: (facts_data) => {
         if (facts_data.id in facts[category]) {
+          // algo to stop searching for jokes after a few failed attempts
           hit_limit_counter = hit_limit_counter + 1;
           if (hit_limit_counter > hit_limit) {
             if (show_error) {
@@ -56,41 +244,12 @@ function get_category_facts(number, category, show_error = false) {
             jokes_gathered = number;
           }
         } else {
-          facts[category][facts_data.id] = {
-            likes: 0,
-            dislikes: 0,
-            fact: facts_data.value,
-          };
           jokes_gathered_ids.push(facts_data.id);
-          $("#facts-list").append(`
-                <div class="fact-card" id="${facts_data.id}">
-                    <div id="fact-status-${facts_data.id}" class="fact-status-popular">POPULAR</div>
-                    "${facts_data.value}"
-                    <div class="likes">
-                        <div id="like-button-${facts_data.id}" class="like-button">
-                            <div id="like-counter-${facts_data.id}" class="like-counter">0</div>
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                viewBox="0 0 24 24"
-                                width="25"
-                                height="25"
-                                class="w-6 h-6">
-                                <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
-                            </svg>
-                        </div>
-                        <div id="dislike-button-${facts_data.id}" class="dislike-button">
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                viewBox="0 0 24 24" 
-                                width="25"
-                                height="25"
-                                class="w-6 h-6">
-                                <path d="M15.73 5.25h1.035A7.465 7.465 0 0118 9.375a7.465 7.465 0 01-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 01-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.498 4.498 0 00-.322 1.672V21a.75.75 0 01-.75.75 2.25 2.25 0 01-2.25-2.25c0-1.152.26-2.243.723-3.218C7.74 15.724 7.366 15 6.748 15H3.622c-1.026 0-1.945-.694-2.054-1.715A12.134 12.134 0 011.5 12c0-2.848.992-5.464 2.649-7.521.388-.482.987-.729 1.605-.729H9.77a4.5 4.5 0 011.423.23l3.114 1.04a4.5 4.5 0 001.423.23zM21.669 13.773c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.959 8.959 0 01-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            `);
+
+          // create new fact and add to list
+          facts[category][facts_data.id] = create_new_fact(facts_data.value);
+          $("#facts-list").append(create_fact_card(facts_data.id, category));
+
           jokes_gathered = jokes_gathered + 1;
         }
       },
@@ -99,69 +258,27 @@ function get_category_facts(number, category, show_error = false) {
 
   // assign listeners to all created
   jokes_gathered_ids.map((id) => {
-    $(`#like-button-${id}`).click((e) => {
-      like(id);
-    });
-    $(`#dislike-button-${id}`).click((e) => {
-      dislike(id);
-    });
+    bind_listeners_to_facts_card(id, category);
   });
 
   unshow_loader();
 }
 
 function show_category_facts(category) {
+  // shows pre-existing category facts
+
   for (id in facts[category]) {
     if (id === "color") {
       // pass
     } else {
-      likes = facts[category][id].likes;
-
-      fact_status = "POPULAR";
-
-      if (likes >= 5 && likes <= 10) {
-        fact_status = "TRENDING";
-      } else if (likes >= 11) {
-        fact_status = "EPIC";
-      }
-
-      $("#facts-list").append(`
-            <div class="fact-card" id="${id}">
-                <div id="fact-status-${id}" class="fact-status-${fact_status.toLowerCase()}">${fact_status}</div>
-                "${facts[category][id].fact}"
-                <div class="likes">
-                    <div id="like-button-${id}" class="like-button">
-                        <div id="like-counter-${id}" class="like-counter">${
-        facts[category][id].likes
-      }</div>
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            viewBox="0 0 24 24"
-                            width="25"
-                            height="25"
-                            class="w-6 h-6">
-                            <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
-                        </svg>
-                    </div>
-                    <div id="dislike-button-${id}" class="dislike-button">
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            viewBox="0 0 24 24" 
-                            width="25"
-                            height="25"
-                            class="w-6 h-6">
-                            <path d="M15.73 5.25h1.035A7.465 7.465 0 0118 9.375a7.465 7.465 0 01-1.235 4.125h-.148c-.806 0-1.534.446-2.031 1.08a9.04 9.04 0 01-2.861 2.4c-.723.384-1.35.956-1.653 1.715a4.498 4.498 0 00-.322 1.672V21a.75.75 0 01-.75.75 2.25 2.25 0 01-2.25-2.25c0-1.152.26-2.243.723-3.218C7.74 15.724 7.366 15 6.748 15H3.622c-1.026 0-1.945-.694-2.054-1.715A12.134 12.134 0 011.5 12c0-2.848.992-5.464 2.649-7.521.388-.482.987-.729 1.605-.729H9.77a4.5 4.5 0 011.423.23l3.114 1.04a4.5 4.5 0 001.423.23zM21.669 13.773c.536-1.362.831-2.845.831-4.398 0-1.22-.182-2.398-.52-3.507-.26-.85-1.084-1.368-1.973-1.368H19.1c-.445 0-.72.498-.523.898.591 1.2.924 2.55.924 3.977a8.959 8.959 0 01-1.302 4.666c-.245.403.028.959.5.959h1.053c.832 0 1.612-.453 1.918-1.227z" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        `);
+      $("#facts-list").append(create_fact_card(id, category));
+      bind_listeners_to_facts_card(id, category);
     }
   }
 }
 
 function new_category_selected(category) {
-  console.log("new category");
+  // listener function when a new category is clicked
 
   $("#active-category").removeClass(facts[active_category].color);
   $("#facts-list").html("");
@@ -213,46 +330,20 @@ function show_all_categories() {
   }
 }
 
-function like(id) {
-  console.log("liked", id);
-  console.log(++facts[active_category][id].likes);
-  $(`#like-counter-${id}`).html(facts[active_category][id].likes);
+function show_single_fact(id, category) {
+  // * shows single page fact
 
-  fact_status = "POPULAR";
+  // hide group facts
+  $("#category-jokes").addClass("unshow");
 
-  if (
-    facts[active_category][id].likes >= 5 &&
-    facts[active_category][id].likes <= 10
-  ) {
-    fact_status = "TRENDING";
-  } else if (facts[active_category][id].likes >= 11) {
-    fact_status = "EPIC";
-  }
+  // show single page fact with big card
+  $("#single-jokes").removeClass("unshow");
 
-  $(`#fact-status-${id}`).html(fact_status);
-  $(`#fact-status-${id}`).removeClass();
-  $(`#fact-status-${id}`).addClass(`fact-status-${fact_status.toLowerCase()}`);
-}
+  // show single joke big page version
+  $("#single-fact-div").html(create_fact_card_single(id, category));
 
-function dislike(id) {
-  console.log("disliked", id);
-  console.log(--facts[active_category][id].likes);
-  $(`#like-counter-${id}`).html(facts[active_category][id].likes);
-
-  fact_status = "POPULAR";
-
-  if (
-    facts[active_category][id].likes >= 5 &&
-    facts[active_category][id].likes <= 10
-  ) {
-    fact_status = "TRENDING";
-  } else if (facts[active_category][id].likes >= 11) {
-    fact_status = "EPIC";
-  }
-
-  $(`#fact-status-${id}`).html(fact_status);
-  $(`#fact-status-${id}`).removeClass();
-  $(`#fact-status-${id}`).addClass(`fact-status-${fact_status.toLowerCase()}`);
+  // add listeners to single-fact-card
+  bind_listeners_to_facts_card_large(id, category);
 }
 
 // * Main
@@ -325,7 +416,7 @@ function main() {
     });
   });
 
-  // add listeners
+  // * SEARCHING FUNCTIONALITY
   $("#search-input").keyup((e) => {
     // console.log("target", e.target.value);
 
@@ -348,12 +439,14 @@ function main() {
               category = "uncategorized";
             }
 
+            fact["category"][fact.id] = {};
+
             $("#search-list").append(`
-                            <li>
-                                <div class="dropdown-category">${category}</div>
-                                ${fact.value.slice(0, 30)}...
-                            </li>
-                        `);
+                <li>
+                    <div class="dropdown-category">${category}</div>
+                    ${fact.value.slice(0, 30)}...
+                </li>
+            `);
           });
 
           x = $("#search-input").position();
@@ -371,6 +464,18 @@ function main() {
     $("#search-dropdown").css({
       display: "none",
     });
+  });
+
+  $("#single-jokes-back").click((e) => {
+    // show category facts
+    $("#category-jokes").removeClass("unshow");
+
+    // hide single page facts
+    $("#single-jokes").addClass("unshow");
+    new_category_selected(active_category);
+
+    // clear single-fact div
+    $("#single-fact-div").html("");
   });
 
   console.log(facts);
