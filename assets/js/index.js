@@ -276,6 +276,10 @@ function get_new_fact(category) {
     category: category,
   };
 
+  if (category === "uncategorized") {
+    return to_return;
+  }
+
   hit_limit = 10;
   hit_limit_counter = 0;
 
